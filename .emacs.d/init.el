@@ -2,6 +2,8 @@
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 (show-paren-mode t)
+(add-to-list 'load-path "~/.emacs.d/")
+
 (if window-system
   (progn (tool-bar-mode -1)
          (menu-bar-mode -1)))
@@ -82,3 +84,68 @@
   "safe-save-buffers-kill-emacs"
   (unless (y-or-n-p "Really exit emacs? ")
     (keyboard-quit)))
+
+; package
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives
+             '("marmalade" . "http://marmalade-repo.org/packages/"))
+(package-initialize)
+
+; helm-mode
+(require 'helm-mode)
+(require 'helm-git-grep)
+
+(defun my-helm ()
+  (interactive)
+  (helm :sources '(helm-c-source-buffers-list
+                   helm-c-source-recentf
+                   helm-c-source-buffer-not-found
+                   helm-c-source-git-grep)
+        :buffer "*my helm*"))
+(global-set-key "\M-;" 'my-helm)
+(setq helm-input-idle-delay 0.02)
+
+; js3-mode
+(require 'js3-mode)
+(setq js3-mirror-mode t)
+(add-to-list 'auto-mode-alist '("\\.js$" . js3-mode))
+
+; rinari
+(require 'rinari)
+(add-to-list 'load-path "~/.emacs.d/rhtml")
+(require 'rhtml-mode)
+
+(defun ruby-mode-hook ()
+  (autoload 'ruby-mode "ruby-mode" nil t)
+  (add-to-list 'auto-mode-alist '("Capfile"        . ruby-mode))
+  (add-to-list 'auto-mode-alist '("Gemfile"        . ruby-mode))
+  (add-to-list 'auto-mode-alist '("Rakefile"       . ruby-mode))
+  (add-to-list 'auto-mode-alist '("\\.rake\\'"     . ruby-mode))
+  (add-to-list 'auto-mode-alist '("\\.rb\\'"       . ruby-mode))
+  (add-to-list 'auto-mode-alist '("\\.ru\\'"       . ruby-mode))
+  (add-to-list 'auto-mode-alist '("\\.gemspec?\\'" . ruby-mode))
+  (add-to-list 'auto-mode-alist '("\\.prawn?\\'"   . ruby-mode))
+
+  (add-hook 'ruby-mode-hook '(lambda ()
+                               (setq ruby-deep-arglist t)
+                               (setq ruby-deep-indent-paren nil)
+                               (setq c-tab-always-indent nil)
+                               (require 'inf-ruby)
+                               (require 'ruby-compilation))))
+(defun rhtml-mode-hook ()
+  (autoload 'rhtml-mode "rhtml-mode" nil t)
+  (add-to-list 'auto-mode-alist '("\\.erb\\'" . rhtml-mode))
+  (add-to-list 'auto-mode-alist '("\\.rhtml\\'" . rhtml-mode)))
+
+(defun yaml-mode-hook ()
+  (autoload 'yaml-mode "yaml-mode" nil t)
+  (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+  (add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-mode)))
+
+(defun css-mode-hook ()
+  (autoload 'css-mode "css-mode" nil t)
+  (add-hook 'css-mode-hook '(lambda ()
+                              (setq css-indent-level 2)
+                              (setq css-indent-offset 2))))
