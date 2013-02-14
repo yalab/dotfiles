@@ -1,0 +1,11 @@
+fontsize = 16
+fg_color = white
+bg_color = black
+mod_meta_mode = esc
+use_anti_alias = true
+col_size_of_width_a = 2
+line_space = 0
+input_method = none
+scrollbar_mode = none
+geometry = 100x25
+logsize = 1024
