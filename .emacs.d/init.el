@@ -144,12 +144,6 @@
   (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
   (add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-mode)))
 
-(defun css-mode-hook ()
-  (autoload 'css-mode "css-mode" nil t)
-  (add-hook 'css-mode-hook '(lambda ()
-                              (setq css-indent-level 2)
-                              (setq css-indent-offset 2))))
-
 (require 'migemo)
 (setq migemo-command "cmigemo")
 (setq migemo-options '("-q" "--emacs"))
@@ -157,3 +151,9 @@
 (setq migemo-user-dictionary nil)
 (setq migemo-regex-dictionary nil)
 (setq migemo-coding-system 'utf-8-unix)
+
+(require 'scss-mode)
+(add-to-list 'auto-mode-alist '("\\.scss$" . scss-mode))
+(add-hook 'scss-mode-hook '(lambda()
+                             (setq css-indent-level 2)
+                             (setq css-indent-offset 2)))
