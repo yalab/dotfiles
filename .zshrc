@@ -1,6 +1,8 @@
 autoload -U compinit
 compinit
 bindkey -e
+stty stop undef
+stty start undef
 
 #PROMPT
 local GREEN=$'%{\e[1;32m%}'
