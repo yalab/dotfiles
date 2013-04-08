@@ -1,5 +1,5 @@
-autoload -U compinit
-compinit
+fpath=(/home/yalab/vendor/zsh-completions/src $fpath)
+autoload -U compinit && compinit
 bindkey -e
 stty stop undef
 stty start undef
