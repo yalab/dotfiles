@@ -166,3 +166,7 @@
 (add-to-list 'auto-mode-alist '("\\.text\\'"     . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'"       . markdown-mode))
+
+(require 'ruby-style)
+(add-hook 'c-mode-hook '(lambda () (c-set-style "ruby")))
+(add-hook 'yacc-mode-hook '(lambda () (c-set-style "ruby")))
