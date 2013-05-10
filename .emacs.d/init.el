@@ -144,13 +144,15 @@
   (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
   (add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-mode)))
 
-(require 'migemo)
 (setq migemo-command "cmigemo")
-(setq migemo-options '("-q" "--emacs"))
+(setq migemo-options '("-q" "--emacs" "-i" "\g"))
 (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict")
+(setq migemo-coding-system 'utf-8-unix)
 (setq migemo-user-dictionary nil)
 (setq migemo-regex-dictionary nil)
-(setq migemo-coding-system 'utf-8-unix)
+(load-library "migemo")
+(migemo-init)
+
 
 (require 'scss-mode)
 (add-to-list 'auto-mode-alist '("\\.scss$" . scss-mode))
