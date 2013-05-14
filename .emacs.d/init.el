@@ -116,6 +116,8 @@
 (require 'rinari)
 (add-to-list 'load-path "~/.emacs.d/rhtml")
 (require 'rhtml-mode)
+(require 'rvm)
+(rvm-use-default)
 
 (defun ruby-mode-hook ()
   (autoload 'ruby-mode "ruby-mode" nil t)
