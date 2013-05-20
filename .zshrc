@@ -101,7 +101,7 @@ irb(){
     $PRY_PATH
 }
 
-rvm use ruby-head > /dev/null
+rvm use ruby-2.0.0 > /dev/null
 
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 
