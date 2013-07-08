@@ -88,3 +88,37 @@
   "Helm Git Submodule Grep"
   (interactive)
   (helm-other-buffer 'helm-c-source-git-submodule-grep "*helm git submodule grep*"))
+
+
+;; (eval-when-compile (require 'cl))
+;; (provide 'helm-git-grep)
+
+;; (helm-c-grep-default-command "git grep -n%cH --full-name -e %p %f")
+
+;; (defvar helm-c-source-git-grep
+;;   `((name . "Git grep")
+;;     (init . helm-ls-git-init)
+;;     (candidates-in-buffer)
+;;     (keymap . ,helm-generic-files-map)
+;;     (filtered-candidate-transformer . helm-ls-git-transformer)
+;;     (action-transformer helm-c-transform-file-load-el)
+;;     (action . ,(cdr (helm-get-actions-from-type helm-c-source-locate)))))
+
+;; ;; (defvar helm-c-source-git-grep
+;; ;;   '((name . "Git Grep")
+;; ;;     (multiline)
+;; ;;     (init . helm-git-grep-init)
+;; ;;     (candidates . helm-git-grep-process)
+;; ;;     (filtered-candidate-transformer helm-git-grep-transformer)
+;; ;;     (action . (("Git Grep Goto " . helm-git-grep-goto)))
+;; ;;     (candidate-number-limit . 300)
+;; ;;     (requires-pattern . 3)
+;; ;;     (volatile)
+;; ;;     (delayed)))
+
+
+
+;; (defun helm-git-grep ()
+;;   "Helm Git Grep"
+;;   (interactive)
+;;   (helm-other-buffer 'helm-c-source-git-grep "*helm git grep*"))

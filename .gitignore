@@ -1,1 +1,4 @@
-.#*
+/.#*
+/.emacs.d/session.*
+/.emacs.d/auto-save-list/*
+/.emacs.d/url/cookies
