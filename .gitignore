@@ -1,6 +1,1 @@
-*~
-.emacs.d/auto-save-list/ 
-.emacs.d/elpa/archives/*/archive-contents
-.emacs.d/url
-.mlterm/challenge
-
+.#*

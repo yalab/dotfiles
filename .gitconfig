@@ -1,0 +1,27 @@
+[color]
+  status = auto
+  diff   = auto
+  grep   = auto
+  branch = auto
+  interactive = auto
+[user]
+	name = yalab
+	email = rudeboyjet@gmail.com
+[github]
+	user = yalab
+[http]
+	sslVerify = false
+[alias]
+	graph = log --graph --date-order -C -M --pretty=format:\"<%h> %ad [%an] %Cgreen%d%Creset %s\" --all --date=short
+	co = checkout
+	st = status
+	ci = commit
+	di = diff
+	br = branch
+[core]
+	excludesfile = /home/yalab/.gitignore
+	pager = less -R
+[credential]
+	helper = cache
+[push]
+	default = simple
