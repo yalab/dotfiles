@@ -9,3 +9,4 @@ input_method = none
 scrollbar_mode = none
 geometry = 100x25
 logsize = 1024
+termtype = xterm
