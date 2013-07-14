@@ -27,6 +27,7 @@ alias less='less -R'
 alias diff='diff -u'
 alias iptables='sudo iptables'
 alias grep='grep --color'
+alias b='bundle exec'
 export EDITOR='vim'
 export GIT_PAGER='less -R'
 export HREF_DATADIR=/usr/share/href
