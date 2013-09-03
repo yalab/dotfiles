@@ -173,3 +173,8 @@
 (require 'ruby-style)
 (add-hook 'c-mode-hook '(lambda () (c-set-style "ruby")))
 (add-hook 'yacc-mode-hook '(lambda () (c-set-style "ruby")))
+
+; treetop-mode
+
+(require 'treetop-mode)
+(add-to-list 'auto-mode-alist '("\\.treetop$" . treetop-mode))
