@@ -130,11 +130,13 @@
 (add-to-list 'auto-mode-alist '("Capfile"        . ruby-mode))
 (add-to-list 'auto-mode-alist '("Gemfile"        . ruby-mode))
 (add-to-list 'auto-mode-alist '("Rakefile"       . ruby-mode))
+(add-to-list 'auto-mode-alist '("Bowerfile"      . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.rake\\'"     . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.rb\\'"       . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.ru\\'"       . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.gemspec?\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.prawn?\\'"   . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.json.jbuilder?\\'"   . ruby-mode))
 
 (defun rhtml-mode-hook ()
   (autoload 'rhtml-mode "rhtml-mode" nil t)
@@ -175,6 +177,13 @@
 (add-hook 'yacc-mode-hook '(lambda () (c-set-style "ruby")))
 
 ; treetop-mode
-
 (require 'treetop-mode)
 (add-to-list 'auto-mode-alist '("\\.treetop$" . treetop-mode))
+
+; coffee-mode for coffee.erb
+(add-to-list 'auto-mode-alist '("\\.coffee\\.erb$" . coffee-mode))
+
+; handlebars-mode
+(require 'handlebars-mode)
+(add-to-list 'auto-mode-alist '("\\.hbs$" . handlebars-mode))
+
