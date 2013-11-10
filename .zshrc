@@ -21,13 +21,16 @@ precmd () {
 PROMPT=$BLUE'${USER}@${HOST}: %(!.#.$) '$DEFAULT
 RPROMPT=$GREEN'[%~]'$DEFAULT
 setopt PROMPT_SUBST
+alias b='bundle exec'
+alias diff='diff -u'
 alias emacs="emacs -nw"
+alias grep='grep --color'
 alias ls='ls --color=auto'
 alias less='less -R'
-alias diff='diff -u'
 alias iptables='sudo iptables'
-alias grep='grep --color'
-alias b='bundle exec'
+alias pbcopy='xsel --clipboard --input'
+alias pbpaste='xsel --clipboard --output'
+
 export EDITOR='vim'
 export GIT_PAGER='less -R'
 export HREF_DATADIR=/usr/share/href
@@ -106,8 +109,8 @@ rvm use ruby-2.0.0 > /dev/null
 
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 
-[[ -s /home/yalab/.nvm/nvm.sh ]] && . /home/yalab/.nvm/nvm.sh # This loads NVM
-#nvm use v0.6.17 > /dev/null
+#[[ -s /home/yalab/.nvm/nvm.sh ]] && . /home/yalab/.nvm/nvm.sh # This loads NVM
+#nvm use v0.10.13 > /dev/null
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
@@ -124,3 +127,15 @@ z(){
   fi
 }
 export ANDROID_SDK_HOME="/opt/android-sdk-linux"
+export MYSQL_USERNAME='yalab'
+export MYSQL_USER='yalab'
+export POSTGRES_USER='yalab'
+
+copy_password(){
+    str="$1"
+    grep -i $str ~/.password | cut -d ':' -f 3 | pbcopy
+}
+copy_id(){
+    str="$1"
+    grep -i $str ~/.password | cut -d ':' -f 2 | pbcopy
+}
