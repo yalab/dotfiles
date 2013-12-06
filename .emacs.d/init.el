@@ -8,6 +8,11 @@
   (progn (tool-bar-mode -1)
          (menu-bar-mode -1)))
 
+(if (string= system-type "darwin")
+  (progn (add-to-list 'exec-path "/opt/boxen/homebrew/bin")
+         (setq ns-command-modifier (quote meta)))
+)
+
 ; Clip Board
 (if (and (equal system-type 'gnu/linux)
          (window-system))

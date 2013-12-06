@@ -19,9 +19,12 @@
 	di = diff
 	br = branch
 [core]
-	excludesfile = /home/yalab/.gitignore
+	excludesfile = /opt/boxen/config/git/gitignore
 	pager = less -R
 [credential]
-	helper = cache
+	helper = /opt/boxen/bin/boxen-git-credential
 [push]
 	default = simple
+
+[hub]
+protocol = https

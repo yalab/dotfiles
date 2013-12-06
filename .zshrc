@@ -25,11 +25,16 @@ alias b='bundle exec'
 alias diff='diff -u'
 alias emacs="emacs -nw"
 alias grep='grep --color'
-alias ls='ls --color=auto'
 alias less='less -R'
 alias iptables='sudo iptables'
 alias pbcopy='xsel --clipboard --input'
 alias pbpaste='xsel --clipboard --output'
+if [ `uname` = 'Darwin' ];then
+  alias ls='ls -G'
+  . ~/.profile
+else
+  alias ls='ls --color=auto'
+fi
 
 export EDITOR='vim'
 export GIT_PAGER='less -R'
@@ -55,7 +60,7 @@ export PATH="$PATH:$ANDROID_SDK_HOME/tools:$ANDROID_SDK_HOME/platform-tools"
 export ANDROID_NDK_ROOT=/opt/android-ndk-r6b 
 export PATH=$PATH:/opt/android-ndk-r6b
 
-[ -s "$HOME/.rvm/scripts/rvm" ] && . "$HOME/.rvm/scripts/rvm"
+[ -s "$HOME/.rvm/scripts/rvm" ] && . "$HOME/.rvm/scripts/rvm" && rvm use ruby-2.0.0 > /dev/null
 
 rails(){
     RAILS=`which -a rails | tail -1`
@@ -105,13 +110,6 @@ irb(){
     $PRY_PATH
 }
 
-rvm use ruby-2.0.0 > /dev/null
-
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-
-#[[ -s /home/yalab/.nvm/nvm.sh ]] && . /home/yalab/.nvm/nvm.sh # This loads NVM
-#nvm use v0.10.13 > /dev/null
-
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 killzeus(){
@@ -119,13 +117,6 @@ killzeus(){
   kill `ps ax | grep zeus | awk '{print $1}'`
 }
 
-z(){
-  if [ "$#" = "0" ];then
-    zeus start
-  else
-    zeus $@
-  fi
-}
 export ANDROID_SDK_HOME="/opt/android-sdk-linux"
 export MYSQL_USERNAME='yalab'
 export MYSQL_USER='yalab'
@@ -135,7 +126,9 @@ copy_password(){
     str="$1"
     grep -i $str ~/.password | cut -d ':' -f 3 | pbcopy
 }
+
 copy_id(){
     str="$1"
     grep -i $str ~/.password | cut -d ':' -f 2 | pbcopy
 }
+
