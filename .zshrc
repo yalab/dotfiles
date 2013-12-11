@@ -32,6 +32,8 @@ alias pbpaste='xsel --clipboard --output'
 if [ `uname` = 'Darwin' ];then
   alias ls='ls -G'
   . ~/.profile
+  rbenv global 2.0.0-p353
+  rbenv rehash
 else
   alias ls='ls --color=auto'
 fi
