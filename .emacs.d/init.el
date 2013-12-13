@@ -102,12 +102,15 @@
 (require 'helm-mode)
 (require 'helm-git-grep)
 
+
+;(global-set-key (kbd "C-c g") ')
 (defun my-helm ()
   (interactive)
   (helm :sources '(helm-c-source-buffers-list
                    helm-c-source-recentf
                    helm-c-source-buffer-not-found
-                   helm-c-source-git-grep)
+                   helm-source-git-grep
+                   )
         :buffer "*my helm*"))
 (global-set-key "\M-;" 'my-helm)
 (setq helm-input-idle-delay 0.02)
