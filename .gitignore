@@ -1,7 +1,8 @@
-/.#*
+.#*
 /.emacs.d/session.*
 /.emacs.d/auto-save-list/*
 /.emacs.d/url/cookies
+/.emacs.d/elpa/archives/*/archive-contents
 *.elc
 /.mlterm/challenge
 /.mlterm/msg.log
