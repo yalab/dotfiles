@@ -27,15 +27,17 @@ alias emacs="emacs -nw"
 alias grep='grep --color'
 alias less='less -R'
 alias iptables='sudo iptables'
-alias pbcopy='xsel --clipboard --input'
-alias pbpaste='xsel --clipboard --output'
 if [ `uname` = 'Darwin' ];then
   alias ls='ls -G'
   . ~/.profile
   rbenv global 2.0.0-p353
   rbenv rehash
+  PASSWORDFILE="${HOME}/.password/.password"
 else
   alias ls='ls --color=auto'
+  alias pbcopy='xsel --clipboard --input'
+  alias pbpaste='xsel --clipboard --output'
+  PASSWORDFILE="${HOME}/.password"
 fi
 
 export EDITOR='vim'
@@ -126,11 +128,13 @@ export POSTGRES_USER='yalab'
 
 copy_password(){
     str="$1"
-    grep -i $str ~/.password | cut -d ':' -f 3 | pbcopy
+    grep -i $str $PASSWORDFILE | cut -d ':' -f 3 | pbcopy
 }
 
 copy_id(){
     str="$1"
-    grep -i $str ~/.password | cut -d ':' -f 2 | pbcopy
+    grep -i $str $PASSWORDFILE | cut -d ':' -f 2 | pbcopy
 }
+
+. ~/.oauth.conf
 
