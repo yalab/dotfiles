@@ -1,5 +1,7 @@
-fpath=(/home/yalab/vendor/zsh-completions/src $fpath)
+fpath=(~/vendor/zsh-completions/src $fpath)
+fpath=(~/.zsh $fpath)
 autoload -U compinit && compinit
+setopt completealiases
 bindkey -e
 stty stop undef
 stty start undef
@@ -30,14 +32,23 @@ alias iptables='sudo iptables'
 if [ `uname` = 'Darwin' ];then
   alias ls='ls -G'
   . ~/.profile
-  rbenv global 2.0.0-p353
+  rbenv global 2.1.2
   rbenv rehash
   PASSWORDFILE="${HOME}/.password/.password"
+  export NODE_PATH=/opt/boxen/nodenv/versions/v0.10.21/lib/node_modules
+  alias mocha-coffee='mocha --compilers coffee:coffee-script'
+  export BOOST_ROOT=/opt/boxen/homebrew/Cellar/boost/1.55.0/include/boos
+  export PATH="/usr/local/bin:${PATH}"
+  alias clear_dns_cache="sudo killall -HUP mDNSResponder"
+  export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home"
+  export ANT_ROOT="/opt/boxen/homebrew/bin"
+  
 else
   alias ls='ls --color=auto'
   alias pbcopy='xsel --clipboard --input'
   alias pbpaste='xsel --clipboard --output'
   PASSWORDFILE="${HOME}/.password"
+  export JAVA_HOME="/usr/lib/jvm/java-6-sun-1.6.0.26"
 fi
 
 export EDITOR='vim'
@@ -52,10 +63,12 @@ SAVEHIST=100000                       # 保存される履歴の数
 setopt extended_history               # 履歴ファイルに時刻を記録
 function history-all { history -E 1 } # 全履歴の一覧を出力する
 setopt share_history
+setopt hist_ignore_dups
+setopt hist_verify
+bindkey "^R" history-incremental-search-backward
+bindkey "^S" history-incremental-search-forward
 
 export PATH="$PATH:/home/yalab/bin"
-
-export JAVA_HOME="/usr/lib/jvm/java-6-sun-1.6.0.26"
 export SCALA_HOME=/opt/scala
 export PATH=$PATH:$SCALA_HOME/bin
 export ANDROID_SDK_HOME="/opt/android"
@@ -64,16 +77,11 @@ export PATH="$PATH:$ANDROID_SDK_HOME/tools:$ANDROID_SDK_HOME/platform-tools"
 export ANDROID_NDK_ROOT=/opt/android-ndk-r6b 
 export PATH=$PATH:/opt/android-ndk-r6b
 
+export ANDROID_SDK_ROOT=/opt/android-sdk
+
 [ -s "$HOME/.rvm/scripts/rvm" ] && . "$HOME/.rvm/scripts/rvm" && rvm use ruby-2.0.0 > /dev/null
 
-rails(){
-    RAILS=`which -a rails | tail -1`
-    ARGS=($@)
-    if [ "$1" = "new" ];then
-        ARGS[`expr ${#ARGS} + 1`]="--skip-bundle"
-    fi
-    $RAILS $ARGS
-}
+alias s="spring"
 export JRUBY_OPTS=--1.9
 setopt nullglob
 
@@ -122,7 +130,7 @@ killzeus(){
 }
 
 export ANDROID_SDK_HOME="/opt/android-sdk-linux"
-export MYSQL_USERNAME='yalab'
+export MYSQL_USERNAME='root'
 export MYSQL_USER='yalab'
 export POSTGRES_USER='yalab'
 
@@ -137,4 +145,19 @@ copy_id(){
 }
 
 . ~/.oauth.conf
+mkpasswd(){
+    CHARS=$1
+    if [ -z "$CHARS" ];then
+        CHARS=12
+    fi
+    ruby -e "puts ('!'..'~').to_a.sample($CHARS).join"
+}
 
+
+export DOCKER_HOST=tcp://localhost:4243
+
+presen_cli()
+{
+    PROMPT=$BLUE'%(!.#.$) '$DEFAULT
+    RPROMPT=""
+}
