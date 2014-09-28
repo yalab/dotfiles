@@ -3,6 +3,7 @@
 (setq auto-save-default nil)
 (show-paren-mode t)
 (add-to-list 'load-path "~/.emacs.d/")
+(setq ring-bell-function 'ignore)
 
 (if window-system
   (progn (tool-bar-mode -1)
@@ -213,3 +214,16 @@
 (require 'nyan-mode)
 (nyan-mode)
 (nyan-start-animation)
+
+;;; mmm-mode
+(require 'mmm-mode)
+(require 'mmm-auto)
+(require 'mmm-erb)
+(setq mmm-global-mode 'maybe)
+
+(define-derived-mode markdown-erb-mode markdown-mode "markdown erb")
+
+(mmm-add-mode-ext-class 'markdown-erb-mode "\\.md\\.erb\\" 'erb)
+(add-to-list 'auto-mode-alist '("\\.md\\.erb$" . markdown-erb-mode))
+
+(add-to-list 'auto-mode-alist '("Dockerfile" . dockerfile-mode))
