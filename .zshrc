@@ -42,6 +42,7 @@ if [ `uname` = 'Darwin' ];then
   alias clear_dns_cache="sudo killall -HUP mDNSResponder"
   export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home"
   export ANT_ROOT="/opt/boxen/homebrew/bin"
+  alias ldd="otool -L"
   
 else
   alias ls='ls --color=auto'
@@ -74,14 +75,13 @@ export PATH=$PATH:$SCALA_HOME/bin
 export ANDROID_SDK_HOME="/opt/android"
 export PATH="$PATH:$ANDROID_SDK_HOME/tools:$ANDROID_SDK_HOME/platform-tools"
 
-export ANDROID_NDK_ROOT=/opt/android-ndk-r6b 
-export PATH=$PATH:/opt/android-ndk-r6b
-
+export ANDROID_NDK_ROOT=/opt/android-ndk-r9c
 export ANDROID_SDK_ROOT=/opt/android-sdk
 
 [ -s "$HOME/.rvm/scripts/rvm" ] && . "$HOME/.rvm/scripts/rvm" && rvm use ruby-2.0.0 > /dev/null
 
 alias s="spring"
+alias l="rake"
 export JRUBY_OPTS=--1.9
 setopt nullglob
 
@@ -106,11 +106,34 @@ git-commit-subdirs(){
     done
 }
 
+in_rails_app(){
+  if [ ! -f Gemfile ];then
+      return -1
+  else
+      grep rails Gemfile > /dev/null
+      return $?
+  fi
+}
+
 rake(){
-  if [ -d .bundle ];then
+  in_rails_app
+  if [ "$?" = "0" ];then
+    spring rake "$@"
+  elif [ -d .bundle ];then
     bundle exec rake  "$@"
   else
     /usr/bin/env rake "$@"
+  fi
+}
+
+rails(){
+  in_rails_app
+  if [ "$?" = "0" ];then
+    spring rails "$@"
+  elif [ -d .bundle ];then
+    bundle exec rails  "$@"
+  else
+    /usr/bin/env rails "$@"
   fi
 }
 
@@ -153,11 +176,16 @@ mkpasswd(){
     ruby -e "puts ('!'..'~').to_a.sample($CHARS).join"
 }
 
-
-export DOCKER_HOST=tcp://localhost:4243
-
 presen_cli()
 {
     PROMPT=$BLUE'%(!.#.$) '$DEFAULT
     RPROMPT=""
+}
+
+set_docker_host(){
+    DOCKER_STATUS=$(boot2docker status)
+    if [ "running" = $DOCKER_STATUS ];then
+        export DOCKER_HOST=tcp://$(boot2docker ip 2>/dev/null):2375
+        export DOCKER_IP=$(echo $DOCKER_HOST | cut -d '/' -f 3 | cut -d ':' -f 1)
+    fi
 }
