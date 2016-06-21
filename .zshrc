@@ -7,43 +7,47 @@ stty stop undef
 stty start undef
 
 #PROMPT
+autoload colors
+colors
 local GREEN=$'%{\e[1;32m%}'
 local BLUE=$'%{\e[1;34m%}'
 local DEFAULT=$'%{\e[1;m%}'
 
 autoload -Uz vcs_info
-zstyle ':vcs_info:*' formats '(%s)-[%b]'
-zstyle ':vcs_info:*' actionformats '(%s)-[%b|%a]'
+zstyle ':vcs_info:git*' formats "(%{$fg[cyan]%}%b)%{$reset_color%}%m%u%c%{$reset_color%}"
+zstyle ':vcs_info:git*' actionformats "%s  %r/%S %b %m%u%c "
 precmd () {
     psvar=()
     LANG=en_US.UTF-8 vcs_info
     [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
 }
 
-PROMPT=$BLUE'${USER}@${HOST}: %(!.#.$) '$DEFAULT
-RPROMPT=$GREEN'[%~]'$DEFAULT
+PROMPT='${BLUE} %(!.#.$) '$DEFAULT
+RPROMPT=$GREEN'[%~%{$fg[cyan]%}${vcs_info_msg_0_}$GREEN]'$DEFAULT
 setopt PROMPT_SUBST
 alias b='bundle exec'
-alias diff='diff -u'
+alias diff='colordiff -u'
 alias emacs="emacs -nw"
 alias grep='grep --color'
 alias less='less -R'
 alias iptables='sudo iptables'
+alias ..='cd ..'
+alias gti="git"
+alias gnuplot="gnuplot -d"
 if [ `uname` = 'Darwin' ];then
   alias ls='ls -G'
   . ~/.profile
-  rbenv global 2.1.2
+  rbenv global 2.3.1
   rbenv rehash
   PASSWORDFILE="${HOME}/.password/.password"
   export NODE_PATH=/opt/boxen/nodenv/versions/v0.10.21/lib/node_modules
-  alias mocha-coffee='mocha --compilers coffee:coffee-script'
+  alias mocha-coffee='mocha --compilers coffee:coffee-script/register'
   export BOOST_ROOT=/opt/boxen/homebrew/Cellar/boost/1.55.0/include/boos
   export PATH="/usr/local/bin:${PATH}"
   alias clear_dns_cache="sudo killall -HUP mDNSResponder"
-  export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home"
   export ANT_ROOT="/opt/boxen/homebrew/bin"
   alias ldd="otool -L"
-  
+  alias refresh_wifi="networksetup -setairportpower en0 off && networksetup -setairportpower en0 on"
 else
   alias ls='ls --color=auto'
   alias pbcopy='xsel --clipboard --input'
@@ -72,16 +76,22 @@ bindkey "^S" history-incremental-search-forward
 export PATH="$PATH:/home/yalab/bin"
 export SCALA_HOME=/opt/scala
 export PATH=$PATH:$SCALA_HOME/bin
-export ANDROID_SDK_HOME="/opt/android"
-export PATH="$PATH:$ANDROID_SDK_HOME/tools:$ANDROID_SDK_HOME/platform-tools"
+#export ANDROID_SDK_HOME="$HOME/.android"
+#export ANDROID_HOME=$ANDROID_SDK_HOME
+#export PATH="$PATH:$ANDROID_SDK_HOME/tools:$ANDROID_SDK_HOME/platform-tools"
 
-export ANDROID_NDK_ROOT=/opt/android-ndk-r9c
+export ANDROID_NDK_ROOT=/opt/android-ndk-r10e
+#export ANDROID_NDK_ROOT=/opt/android-ndk-r9d
+#export ANDROID_NDK_ROOT=/opt/android-ndk-r11
+
 export ANDROID_SDK_ROOT=/opt/android-sdk
+export PATH="$PATH:${ANDROID_SDK_ROOT}/tools:${ANDROID_SDK_ROOT}/platform-tools:${ANDROID_NDK_ROOT}"
 
 [ -s "$HOME/.rvm/scripts/rvm" ] && . "$HOME/.rvm/scripts/rvm" && rvm use ruby-2.0.0 > /dev/null
 
 alias s="spring"
-alias l="rake"
+alias l="rails"
+alias r='rails'
 export JRUBY_OPTS=--1.9
 setopt nullglob
 
@@ -107,7 +117,8 @@ git-commit-subdirs(){
 }
 
 in_rails_app(){
-  if [ ! -f Gemfile ];then
+    
+  if [ ! -f $(git rev-parse --show-toplevel)/Gemfile ];then
       return -1
   else
       grep rails Gemfile > /dev/null
@@ -126,24 +137,16 @@ rake(){
   fi
 }
 
-rails(){
-  in_rails_app
-  if [ "$?" = "0" ];then
-    spring rails "$@"
-  elif [ -d .bundle ];then
-    bundle exec rails  "$@"
-  else
-    /usr/bin/env rails "$@"
-  fi
-}
-
-irb(){
-    PRY_PATH=`which pry`
-    if [ "$?" = "" ];then
-        PRY_PATH=`which irb`
-    fi
-    $PRY_PATH
-}
+# rails(){
+#   in_rails_app
+#   if [ "$?" = "0" ];then
+#     bundle exec spring rails "$@"
+#   elif [ -d .bundle ];then
+#     bundle exec rails  "$@"
+#   else
+#     /usr/bin/env rails "$@"
+#   fi
+# }
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
@@ -152,7 +155,9 @@ killzeus(){
   kill `ps ax | grep zeus | awk '{print $1}'`
 }
 
-export ANDROID_SDK_HOME="/opt/android-sdk-linux"
+if [ "$ANDROID_SDK_HOME" = "" ];then
+    export ANDROID_SDK_HOME="/opt/android-sdk-linux"
+fi
 export MYSQL_USERNAME='root'
 export MYSQL_USER='yalab'
 export POSTGRES_USER='yalab'
@@ -182,10 +187,29 @@ presen_cli()
     RPROMPT=""
 }
 
-set_docker_host(){
-    DOCKER_STATUS=$(boot2docker status)
-    if [ "running" = $DOCKER_STATUS ];then
-        export DOCKER_HOST=tcp://$(boot2docker ip 2>/dev/null):2375
-        export DOCKER_IP=$(echo $DOCKER_HOST | cut -d '/' -f 3 | cut -d ':' -f 1)
-    fi
-}
+
+export _JAVA_OPTIONS='-Dfile.encoding=UTF-8'
+
+#alias docker_clean_image='docker rmi \$(docker images | awk '/^<none>/ { print $3 }')"'
+#alias docker_clean_container="docker rm `docker ps -a -q`"
+
+alias say="say -v Alex"
+alias gi="git"
+#say -v Alex $(basename $SHELL)
+
+# Add environment variable COCOS_TEMPLATES_ROOT for cocos2d-x
+export COCOS_TEMPLATES_ROOT=/Users/yalab/Library/Cocos/CocosStore/cocos2d-x-3.8/templates
+export PATH=$COCOS_TEMPLATES_ROOT:$PATH
+
+# Add environment variable COCOS_CONSOLE_ROOT for cocos2d-x
+export COCOS_CONSOLE_ROOT=/Applications/Cocos/Cocos2d-x/cocos2d-x-3.10/tools/cocos2d-console/bin
+export PATH=$COCOS_CONSOLE_ROOT:$PATH
+
+# Add environment variable COCOS_X_ROOT for cocos2d-x
+export COCOS_X_ROOT=/Applications/Cocos/Cocos2d-x
+export PATH=$COCOS_X_ROOT:$PATH
+
+# Add environment variable COCOS_TEMPLATES_ROOT for cocos2d-x
+export COCOS_TEMPLATES_ROOT=/Applications/Cocos/Cocos2d-x/cocos2d-x-3.10/templates
+export PATH=$COCOS_TEMPLATES_ROOT:$PATH
+alias "builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks"="rsync --exclude .DS_Store --exclude CVS --exclude .svn --exclude .git --exclude .hg --copy-links"
