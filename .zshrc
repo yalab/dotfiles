@@ -29,23 +29,32 @@ alias b='bundle exec'
 alias diff='colordiff -u'
 alias emacs="emacs -nw"
 alias grep='grep --color'
+alias grap='grep'
 alias less='less -R'
 alias iptables='sudo iptables'
 alias ..='cd ..'
 alias gti="git"
 alias gnuplot="gnuplot -d"
+alias raisl="rails"
+alias rspec="bundle exec rspec"
 if [ `uname` = 'Darwin' ];then
   alias ls='ls -G'
+  export PATH="${HOME}/.rbenv/bin:${HOME}/.nodenv/bin:/usr/local/bin:/opt/local/homebrew/bin:${PATH}"
+  eval "$(nodenv init -)"
+  nodenv global 6.10.2
   . ~/.profile
-  rbenv global 2.3.1
+  eval "$(rbenv init -)"
+  rbenv global 2.5.0
   rbenv rehash
+  export PYENV_ROOT=$HOME/.pyenv
+  export PATH=$PYENV_ROOT/bin:$PATH
+  eval "$(pyenv init -)"
+  pyenv global 3.6.1
+
   PASSWORDFILE="${HOME}/.password/.password"
-  export NODE_PATH=/opt/boxen/nodenv/versions/v0.10.21/lib/node_modules
   alias mocha-coffee='mocha --compilers coffee:coffee-script/register'
-  export BOOST_ROOT=/opt/boxen/homebrew/Cellar/boost/1.55.0/include/boos
-  export PATH="/usr/local/bin:${PATH}"
   alias clear_dns_cache="sudo killall -HUP mDNSResponder"
-  export ANT_ROOT="/opt/boxen/homebrew/bin"
+  export ANT_ROOT="/opt/local/homebrew/bin"
   alias ldd="otool -L"
   alias refresh_wifi="networksetup -setairportpower en0 off && networksetup -setairportpower en0 on"
 else
@@ -78,20 +87,14 @@ export SCALA_HOME=/opt/scala
 export PATH=$PATH:$SCALA_HOME/bin
 #export ANDROID_SDK_HOME="$HOME/.android"
 #export ANDROID_HOME=$ANDROID_SDK_HOME
-#export PATH="$PATH:$ANDROID_SDK_HOME/tools:$ANDROID_SDK_HOME/platform-tools"
 
-export ANDROID_NDK_ROOT=/opt/android-ndk-r10e
-#export ANDROID_NDK_ROOT=/opt/android-ndk-r9d
-#export ANDROID_NDK_ROOT=/opt/android-ndk-r11
 
-export ANDROID_SDK_ROOT=/opt/android-sdk
-export PATH="$PATH:${ANDROID_SDK_ROOT}/tools:${ANDROID_SDK_ROOT}/platform-tools:${ANDROID_NDK_ROOT}"
 
 [ -s "$HOME/.rvm/scripts/rvm" ] && . "$HOME/.rvm/scripts/rvm" && rvm use ruby-2.0.0 > /dev/null
 
 alias s="spring"
 alias l="rails"
-alias r='rails'
+alias f="foreman start -f Procfile.development"
 export JRUBY_OPTS=--1.9
 setopt nullglob
 
@@ -116,38 +119,6 @@ git-commit-subdirs(){
     done
 }
 
-in_rails_app(){
-    
-  if [ ! -f $(git rev-parse --show-toplevel)/Gemfile ];then
-      return -1
-  else
-      grep rails Gemfile > /dev/null
-      return $?
-  fi
-}
-
-rake(){
-  in_rails_app
-  if [ "$?" = "0" ];then
-    spring rake "$@"
-  elif [ -d .bundle ];then
-    bundle exec rake  "$@"
-  else
-    /usr/bin/env rake "$@"
-  fi
-}
-
-# rails(){
-#   in_rails_app
-#   if [ "$?" = "0" ];then
-#     bundle exec spring rails "$@"
-#   elif [ -d .bundle ];then
-#     bundle exec rails  "$@"
-#   else
-#     /usr/bin/env rails "$@"
-#   fi
-# }
-
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 killzeus(){
@@ -155,9 +126,6 @@ killzeus(){
   kill `ps ax | grep zeus | awk '{print $1}'`
 }
 
-if [ "$ANDROID_SDK_HOME" = "" ];then
-    export ANDROID_SDK_HOME="/opt/android-sdk-linux"
-fi
 export MYSQL_USERNAME='root'
 export MYSQL_USER='yalab'
 export POSTGRES_USER='yalab'
@@ -188,13 +156,12 @@ presen_cli()
 }
 
 
-export _JAVA_OPTIONS='-Dfile.encoding=UTF-8'
+alias dcrun="docker-compose run --no-deps"
 
-#alias docker_clean_image='docker rmi \$(docker images | awk '/^<none>/ { print $3 }')"'
-#alias docker_clean_container="docker rm `docker ps -a -q`"
-
-alias say="say -v Alex"
+#alias say="say -v Alex"
+alias say="say -v Daniel"
 alias gi="git"
+alias rubyhighlight="highlight -l -k monaco -K 33 -s yalab -S ruby -O rtf"
 #say -v Alex $(basename $SHELL)
 
 # Add environment variable COCOS_TEMPLATES_ROOT for cocos2d-x
@@ -213,3 +180,10 @@ export PATH=$COCOS_X_ROOT:$PATH
 export COCOS_TEMPLATES_ROOT=/Applications/Cocos/Cocos2d-x/cocos2d-x-3.10/templates
 export PATH=$COCOS_TEMPLATES_ROOT:$PATH
 alias "builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks"="rsync --exclude .DS_Store --exclude CVS --exclude .svn --exclude .git --exclude .hg --copy-links"
+source $HOME/.cargo/env
+export PATH="$PATH:/Users/yalab/vendor/geckodriver/target/debug"
+export PATH="/opt/local/homebrew/opt/openssl/bin:$PATH"
+export PATH="/opt/local/homebrew/opt/flex/bin:$PATH"
+export PATH="/opt/local/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+
+export PATH="$HOME/.yarn/bin:$PATH"
