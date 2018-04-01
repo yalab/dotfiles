@@ -4,6 +4,11 @@
 (show-paren-mode t)
 (setq ring-bell-function 'ignore)
 (add-to-list 'load-path "~/.emacs.d/elisp")
+(load "ylb-functions")
+;; (require 'foreign-regexp)
+;; (custom-set-variables
+;;  '(foreign-regexp/regexp-type 'ruby)
+;;  '(reb-re-syntax 'foreign-regexp))
 
 (if window-system
   (progn (tool-bar-mode -1)
@@ -141,7 +146,7 @@ With a prefix arg ARG git-grep the whole repository."
  '(js2-strict-missing-semi-warning nil)
  '(package-selected-packages
    (quote
-    (fish-mode sass-mode typescript-mode yaml-mode w3m twittering-mode toml-mode srefactor slim-mode scss-mode rubocop rinari quickrun popup nyan-mode nhexl-mode nasm-mode mmm-mode migemo markdown-mode+ lua-mode less-css-mode js2-mode indent-guide handlebars-mode gradle-mode go-mode flymake-sass flymake-rust flymake-ruby flymake flycheck dockerfile-mode csharp-mode coffee-mode async))))
+    (foreign-regexp php-mode flycheck-rust rust-mode fish-mode sass-mode typescript-mode yaml-mode w3m twittering-mode toml-mode srefactor slim-mode scss-mode rubocop rinari quickrun popup nyan-mode nhexl-mode nasm-mode mmm-mode migemo markdown-mode+ lua-mode less-css-mode js2-mode indent-guide handlebars-mode gradle-mode go-mode flymake-sass flymake-rust flymake-ruby flymake flycheck dockerfile-mode csharp-mode coffee-mode async))))
 
 (define-key global-map (kbd "M-;") 'helm-mini)
 (define-key global-map (kbd "M-'") 'helm-git-grep)
@@ -156,10 +161,19 @@ With a prefix arg ARG git-grep the whole repository."
 (add-to-list 'auto-mode-alist '("\\.vue$" . js2-jsx-mode))
 (add-hook 'js2-mode-hook (lambda () (setq js2-basic-offset 2)))
 
+; tss
+(setq typescript-indent-level 2)
+
 ; rinari
 (require 'rinari)
 (add-to-list 'load-path "~/.emacs.d/rhtml")
 (require 'rhtml-mode)
+
+(add-hook 'rhtml-mode-hook
+          '(lambda ()
+             (hs-minor-mode 1)))
+
+(define-key global-map (kbd "C-\\") 'hs-toggle-hiding)
 
 (defun ruby-mode-hook ()
   (autoload 'ruby-mode "ruby-mode" nil t)
