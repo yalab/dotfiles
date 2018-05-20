@@ -3,6 +3,12 @@
   (interactive "r")
   (replace-regexp "\"\\([a-z_]+\\)\"=>" "\\1: " nil start end))
 
+(defun ylb-hashkeyasjson (start end)
+  "ruby Hash key json style"
+  (interactive "r")
+  (replace-regexp ":\\([a-z_]+\\) *=>" "\\1:" nil start end))
+
+
 (defun ylb-htmlopttoerb (start end)
   "html attreibute to erb option"
   (interactive "r")
@@ -21,9 +27,11 @@
   (interactive "r")
   (save-excursion
     (funcall (lambda ()
+               (replace-regexp "value=\"[^\"]+\"" "" nil start end)
+               (replace-regexp "input_" "" nil start end)
                (replace-regexp
                 "<input\\([^>]+\\) ?name=\"\\([0-9a-z_]+\\)\"\\([^/>]+\\)/?>"
-                "<%= f.text_field :\\2\\1\\3 %>" nil start end)
+                "<%= f.text_field :\\2\\1\\3%>" nil start end)
                (call-interactively 'ylb-htmlopttoerb)
                (call-interactively 'ylb-strip-unused-html-attributes)))))
 
@@ -45,3 +53,15 @@
             (replace-regexp "\@\\([^ ]+\\) = \\([^\n]*\\)" "let(:\\1){ \\2 }" nil start (point))
             (replace-regexp "," ", " nil start (point))
             )))
+
+
+(defun ylb-php-var-to-erb (start end)
+  "php variable to erb"
+  (interactive "r")
+  (replace-regexp "{.+input_\\([a-z_]+\\).+}" "<%= @applicant.\\1 %>" nil start end))
+
+
+(defun ylb-field-to-show (start end)
+  "php variable to erb"
+  (interactive "r")
+  (replace-regexp "form[^:]+:\\([^,]+\\)[^%]+" "@feature_page.\\1 " nil start end))
