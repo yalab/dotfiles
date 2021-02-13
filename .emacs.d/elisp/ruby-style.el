@@ -51,8 +51,8 @@
 (c-add-style
  "ruby"
  '("bsd"
-   (c-basic-offset . 4)
-   (tab-width . 8)
+   (c-basic-offset . 2)
+   (tab-width . 2)
    (indent-tabs-mode . t)
    (setq show-trailing-whitespace t)
    (c-offsets-alist

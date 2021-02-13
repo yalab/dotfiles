@@ -15,7 +15,7 @@
          (menu-bar-mode -1)))
 
 (if (string= system-type "darwin")
-  (progn (add-to-list 'exec-path "/opt/local/homebrew/bin")
+  (progn (add-to-list 'exec-path "/usr/local/bin")
          (setq ns-command-modifier (quote meta))))
 
 ; Clip Board
@@ -32,13 +32,13 @@
 (setq default-tab-width 4)
 (setq-default indent-tabs-mode nil)
 
-(eval-after-load "untabify-file"
-  '(progn
-     (remove-hook 'write-file-hooks 'untabify-before-write)))
+;; (eval-after-load "untabify-file"
+;;   '(progn
+;;      (remove-hook 'write-file-hooks 'untabify-before-write)))
 
 ; format
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
-;(setq require-final-newline nil)
+;(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(setq require-final-newline nil)
 
 ; UTF-8 and Japanese Setting
 (set-language-environment 'Japanese)
@@ -87,7 +87,7 @@
          (set-foreground-color "LightGray")
          (set-cursor-color "Gray")
          (set-frame-parameter nil 'alpha 90)
-         (setq default-frame-alist (append (list '(width . 80)
+         (setq default-frame-alist (append (list '(width . 95)
                                           '(height . 30))
                                     default-frame-alist))
          (set-face-attribute 'default nil :family font-family :height 140)
@@ -105,49 +105,10 @@
 
 ; package
 (require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-(add-to-list 'package-archives
-             '("marmalade" . "https://marmalade-repo.org/packages/"))
 (package-initialize)
-
-; helm-mode
-(require 'format-spec)
-(require 'helm-grep)
-
-(defun helm-git-grep (arg)
-  "Preconfigured helm for git-grepping `default-directory'.
-With a prefix arg ARG git-grep the whole repository."
-  (interactive "P")
-  (require 'helm-files)
-  (helm-grep-git-1 (file-name-as-directory
-                    (replace-regexp-in-string
-                     "\n" ""
-                     (shell-command-to-string "git rev-parse --show-toplevel"))) arg))
-
-(helm-mode 1)
-(global-set-key (kbd "C-c h") 'helm-command-prefix)
-(global-unset-key (kbd "C-x c"))
-(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
-(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
-(define-key helm-map (kbd "C-z")  'helm-select-action)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(helm-mini-default-sources
-   (quote
-    (helm-source-grep-git helm-source-buffers-list helm-source-recentf helm-source-files-in-current-dir)))
- '(js2-strict-missing-semi-warning nil)
- '(package-selected-packages
-   (quote
-    (company-go foreign-regexp php-mode flycheck-rust rust-mode fish-mode sass-mode typescript-mode yaml-mode w3m twittering-mode toml-mode srefactor slim-mode scss-mode rubocop rinari quickrun popup nyan-mode nhexl-mode nasm-mode mmm-mode migemo markdown-mode+ lua-mode less-css-mode js2-mode indent-guide handlebars-mode gradle-mode go-mode flymake-sass flymake-rust flymake-ruby flymake flycheck dockerfile-mode csharp-mode coffee-mode async))))
-
-(define-key global-map (kbd "M-;") 'helm-mini)
-(define-key global-map (kbd "M-'") 'helm-git-grep)
 
 ; js2-mode
 (require 'js2-mode)
@@ -171,7 +132,7 @@ With a prefix arg ARG git-grep the whole repository."
 (setq migemo-command "cmigemo")
 (setq migemo-options '("-q" "--emacs" "-i" "\g"))
 (cond ((string= system-type "darwin")
-       (setq migemo-dictionary "/opt/local/homebrew/Cellar/cmigemo/20110227/share/migemo/utf-8/migemo-dict"))
+       (setq migemo-dictionary "/usr/local/Cellar/cmigemo/20110227/share/migemo/utf-8/migemo-dict"))
       (t
        (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict")))
 ;(setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict")
@@ -260,19 +221,39 @@ With a prefix arg ARG git-grep the whole repository."
             (setq c-default-style "k&r")
             (setq indent-tabs-mode nil)
             (setq c-basic-offset 2)))
-(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 (add-hook 'c-mode-common-hook 'flycheck-mode)
+(add-hook 'c-mode-hook (lambda ()
+                         (setq-local flycheck-clang-language-standard "c11")))
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 (add-hook 'c++-mode-hook
           (lambda () (setq flycheck-clang-include-path
-                           (list (expand-file-name "/opt/boxen/homebrew/opt/opencv3/include")))))
-(require 'srefactor)
-(define-key c-mode-map (kbd "M-RET") 'srefactor-refactor-at-point)
-(define-key c++-mode-map (kbd "M-RET") 'srefactor-refactor-at-point)
+                           (list "./include"
+                                 "./.ext/include/x86_64-darwin16"
+                                 "/Users/yalab/project/ruby/include"))))
+;; (require 'srefactor)
+;; (define-key c-mode-map (kbd "M-RET") 'srefactor-refactor-at-point)
+;; (define-key c++-mode-map (kbd "M-RET") 'srefactor-refactor-at-point)
 
 
 (add-to-list 'auto-mode-alist '("\\.script\\'"       . lua-mode))
 
 
 ;; markdown
-(setq markdown-command "/opt/local/homebrew/bin/multimarkdown")
-(require 'go-env)
+(setq markdown-command "/usr/local/bin/multimarkdown")
+(load "counsel-env")
+(load "rust-env")
+
+(require 'rainbow-delimiters)
+(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+
+
+(require 'cl-lib)
+(require 'color)
+(defun rainbow-delimiters-using-stronger-colors ()
+  (interactive)
+  (cl-loop
+   for index from 1 to rainbow-delimiters-max-face-count
+   do
+   (let ((face (intern (format "rainbow-delimiters-depth-%d-face" index))))
+    (cl-callf color-saturate-name (face-foreground face) 30))))
+(add-hook 'emacs-startup-hook 'rainbow-delimiters-using-stronger-colors)
