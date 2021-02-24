@@ -1,0 +1,12 @@
+steps:
+- id: decrypt-environment-file
+  name: gcr.io/cloud-builders/gcloud
+  args:
+  - kms
+  - decrypt
+  - --ciphertext-file=.env.test.enc
+  - --plaintext-file=.env.test
+  - --location=global
+  - --keyring=magi-env
+  - --key=magi-env
+  waitFor: ['-']

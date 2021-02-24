@@ -1,14 +1,16 @@
-(provide 'go-env)
-(add-to-list 'exec-path (expand-file-name "/usr/local/go/bin/"))
 (add-to-list 'exec-path (expand-file-name "/Users/yalab/go/bin/"))
 (add-hook 'go-mode-hook 'flycheck-mode)
 (add-hook 'go-mode-hook (lambda()
+       (setq gofmt-command "goimports")
        (add-hook 'before-save-hook' 'gofmt-before-save)
        (local-set-key (kbd "M-.") 'godef-jump)
        (set (make-local-variable 'company-backends) '(company-go))
        (setq indent-tabs-mode nil)
        (setq c-basic-offset 4)
        (setq tab-width 4)))
+
+(setenv "GOPATH" "/Users/yalab/go")
+(setenv "GOROOT" "/Users/yalab/.goenv/versions/1.12.0")
 
 (require 'company-go)
 (add-hook 'go-mode-hook (lambda()

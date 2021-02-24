@@ -189,6 +189,13 @@
 (require 'mmm-erb)
 (setq mmm-global-mode 'maybe)
 
+
+(require 'company)
+(global-company-mode)
+(setq company-idle-delay 0)
+(setq company-minimum-prefix-length 2)
+(setq company-selection-wrap-around t)
+
 (define-derived-mode markdown-erb-mode markdown-mode "markdown erb")
 
 (mmm-add-mode-ext-class 'markdown-erb-mode "\\.md\\.erb\\" 'erb)
@@ -247,7 +254,6 @@
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
 
-(require 'cl-lib)
 (require 'color)
 (defun rainbow-delimiters-using-stronger-colors ()
   (interactive)
@@ -257,3 +263,10 @@
    (let ((face (intern (format "rainbow-delimiters-depth-%d-face" index))))
     (cl-callf color-saturate-name (face-foreground face) 30))))
 (add-hook 'emacs-startup-hook 'rainbow-delimiters-using-stronger-colors)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(cargo lsp-ui yaml-mode flycheck-rust lsp-mode w3m twittering-mode toml-mode tide scss-mode rustic rubocop rinari rainbow-delimiters quickrun popup php-mode nyan-mode nasm-mode mmm-mode migemo lua-mode js2-mode indent-guide handlebars-mode gradle-mode foreign-regexp flymake-rust flymake fish-mode dockerfile-mode csharp-mode counsel company-go coffee-mode)))

@@ -7,7 +7,8 @@
       '((t . ivy--regex-plus)))
 
 (global-set-key (kbd "M-x") 'counsel-M-x)
-(global-set-key (kbd "M-;") 'counsel-find-file)
+(global-set-key (kbd "M-;") 'counsel-ibuffer)
+(define-key ivy-minibuffer-map (kbd "<return>") #'ivy-alt-done)
 (setq counsel-find-file-ignore-regexp (regexp-opt '("./" "../")))
 
 (setq read-file-name-function
