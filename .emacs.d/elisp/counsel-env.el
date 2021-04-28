@@ -11,10 +11,9 @@
 (define-key ivy-minibuffer-map (kbd "<return>") #'ivy-alt-done)
 (setq counsel-find-file-ignore-regexp (regexp-opt '("./" "../")))
 
-(setq read-file-name-function
-  (lambda (&rest args)
-    (let ((completing-read-function #'completing-read-default))
-      (apply #'read-file-name-default args))))
+(require 'dumb-jump)
+(add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
+(setf dumb-jump-selector 'ivy)
 
 (defun counsel-git-grep-function (string &optional _pred &rest _u)
   "Grep in the current git repository for STRING."

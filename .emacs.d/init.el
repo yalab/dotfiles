@@ -15,7 +15,7 @@
          (menu-bar-mode -1)))
 
 (if (string= system-type "darwin")
-  (progn (add-to-list 'exec-path "/usr/local/bin")
+  (progn (add-to-list 'exec-path "/opt/homebrew/bin")
          (setq ns-command-modifier (quote meta))))
 
 ; Clip Board
@@ -132,10 +132,9 @@
 (setq migemo-command "cmigemo")
 (setq migemo-options '("-q" "--emacs" "-i" "\g"))
 (cond ((string= system-type "darwin")
-       (setq migemo-dictionary "/usr/local/Cellar/cmigemo/20110227/share/migemo/utf-8/migemo-dict"))
+       (setq migemo-dictionary "/opt/homebrew/Cellar/cmigemo/20110227/share/migemo/utf-8/migemo-dict"))
       (t
        (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict")))
-;(setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict")
 (setq migemo-coding-system 'utf-8-unix)
 (setq migemo-user-dictionary nil)
 (setq migemo-regex-dictionary nil)
@@ -269,4 +268,4 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(cargo lsp-ui yaml-mode flycheck-rust lsp-mode w3m twittering-mode toml-mode tide scss-mode rustic rubocop rinari rainbow-delimiters quickrun popup php-mode nyan-mode nasm-mode mmm-mode migemo lua-mode js2-mode indent-guide handlebars-mode gradle-mode foreign-regexp flymake-rust flymake fish-mode dockerfile-mode csharp-mode counsel company-go coffee-mode)))
+   '(dumb-jump slim-mode cargo lsp-ui yaml-mode flycheck-rust lsp-mode w3m twittering-mode toml-mode tide scss-mode rustic rubocop rinari rainbow-delimiters quickrun popup php-mode nyan-mode nasm-mode mmm-mode migemo lua-mode js2-mode indent-guide handlebars-mode gradle-mode foreign-regexp flymake-rust flymake fish-mode dockerfile-mode csharp-mode counsel company-go coffee-mode)))
